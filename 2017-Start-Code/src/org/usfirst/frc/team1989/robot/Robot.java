@@ -24,10 +24,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot implements cmd{
 	
 	
-
+	CANTalon1989 driveFrontLeft = new CANTalon1989(3);
+	CANTalon1989 driveFrontRight = new CANTalon1989(9);
+	CANTalon1989 driveBackLeft = new CANTalon1989(7);
+	CANTalon1989 driveBackRight = new CANTalon1989(5);
 	CANTalon1989 climberLeft = new CANTalon1989(4);
-	
 	CANTalon1989 climberRight = new CANTalon1989(2);
+	CANTalon1989 gearMotor = new CANTalon1989(6);
+	
+
+
 	
 	double driveramp = 6.0;
 	public String type = ""; // holds class type
@@ -49,29 +55,29 @@ public class Robot extends IterativeRobot implements cmd{
 	JsScaled driveStick = new JsScaled(0);
 	JsScaled uStick = new JsScaled(1);//The uStick will stand for the utility joystick responsible for shooting and arm movement
 	
+	Gyro gyro;
 
 
-
-	MecDriveCmd mDrive = new MecDriveCmd(driveStick);
+	MecDriveCmd mDrive = new MecDriveCmd(driveFrontLeft, driveBackLeft, driveFrontRight, driveFrontRight, driveStick);
 	CameraControl camControl = new CameraControl(servoX, servoY, driveStick);
-	//GearPushCmd gearPusher = new GearPushCmd(driveStick);
+	GearPushCmd gearPusher = new GearPushCmd(gearMotor, driveStick);
 	@Override
 	public void robotInit() {
 		SharedStuff.cmdlist.add(mDrive);
 		SharedStuff.cmdlist.add(camControl);
-		//SharedStuff.cmdlist.add(gearPusher);
+		SharedStuff.cmdlist.add(gearPusher);
 		camControl.cameraReset();
 		t1.start();
 		CameraServer.getInstance().startAutomaticCapture();
 		
-		//try{
-			//gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-			//System.out.println("gyro connected");
-		//}
-		//catch (NullPointerException e){
-			//gyro = null;
-			//System.out.println("gyro not connected");
-		//}
+		try{
+			gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
+			System.out.println("gyro connected");
+		}
+		catch (NullPointerException e){
+			gyro = null;
+			System.out.println("gyro not connected");
+		}
 	}
 
 	
@@ -99,9 +105,6 @@ public class Robot extends IterativeRobot implements cmd{
 	}
 	@Override
 	public void teleopPeriodic() {
-		// Intialize the Camera
-		
-		
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
@@ -109,30 +112,8 @@ public class Robot extends IterativeRobot implements cmd{
 	
 		
 	if(t1.get() <= 1){
-		System.out.println(mDrive.backLeft.getEncPosition());
-		System.out.println(mDrive.backRight.getEncPosition());
-	}
-	else{
-		t1.stop();
-		t1.reset();
-		t1.start();
-	}
-	
-
-	
-	if(driveStick.getRawButton(6) == true){
-		climberLeft.set(-0.75);
-		climberRight.set(-0.75);
-	} else{
-		climberLeft.set(0);
-		climberRight.set(0);
-	}
-		
-	
-		
-	if(t1.get() <= 1){
-		System.out.println(mDrive.backLeft.getEncPosition());
-		System.out.println(mDrive.backRight.getEncPosition());
+		System.out.println(mDrive.driveBackLeft.getEncPosition());
+		System.out.println(mDrive.driveBackRight.getEncPosition());
 	}
 	else{
 		t1.stop();
@@ -151,15 +132,7 @@ public class Robot extends IterativeRobot implements cmd{
 	}
 	
 		
-		//try{
-			//gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-		
-		//}
-		//catch (NullPointerException e){
-			//gyro = null;
-		
-		//}
-		
+	
 		
 	}
 
@@ -168,31 +141,8 @@ public class Robot extends IterativeRobot implements cmd{
 	 */
 	@Override
 	public void testPeriodic() {
-		if(driveStick.getRawButton(1) == true){
-			climberLeft.set(0.5);
-			//climberRight.set(0.5);
-		} else{
-			climberLeft.set(0);
-			//climberRight.set(0);
-		}
-		if(driveStick.getRawButton(2) == true){
-			climberRight.set(0.5);
-		}
-		else{
-			climberRight.set(0);
-		}
-		if(driveStick.getRawButton(3) == true){
-			climberLeft.set(0.5);
-			climberRight.set(0.5);
-		} else{
-			climberLeft.set(0);
-			climberRight.set(0);
-		}
-		
-		
-	}
-		
-	}
 
+		
+	}
+}
 	
-
