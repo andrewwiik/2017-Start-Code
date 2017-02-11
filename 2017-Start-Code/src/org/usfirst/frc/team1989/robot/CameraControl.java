@@ -3,8 +3,6 @@ package org.usfirst.frc.team1989.robot;
 import edu.wpi.first.wpilibj.Servo;
 
 public class CameraControl implements cmd {
-
-	
 	Servo servoX;
 	Servo servoY;
 	double sxValue = 0;
@@ -20,19 +18,16 @@ public class CameraControl implements cmd {
 	
 	public void cameraMovement(){
 		if(uStick.getPOV(0) == 270){
-			sxValue -= 0.05;
-			
-			
+			sxValue -= 0.025;			
 		}
 		else if (uStick.getPOV(0) == 90){
-			sxValue += 0.05;
+			sxValue += 0.025;
 		}
 		else if (uStick.getPOV(0) == 180){
-			syValue -= 0.05;
+			syValue -= 0.205;
 		}
 		else if (uStick.getPOV(0) == 0){
-			syValue += 0.05;
-
+			syValue += 0.025;
 		}
 		
 		counterCheck();

@@ -7,10 +7,10 @@ public class MecDriveCmd implements cmd {
 	 
 	
 	
-	CANTalon1989 frontLeft = new CANTalon1989(3);
-	CANTalon1989 frontRight = new CANTalon1989(9);
-	CANTalon1989 backLeft = new CANTalon1989(7);//encoder motor
-	CANTalon1989 backRight = new CANTalon1989(5);// encoder motor
+	CANTalon1989 driveFrontLeft;
+	CANTalon1989 driveFrontRight;
+	CANTalon1989 driveBackLeft;//encoder motor
+	CANTalon1989 driveBackRight;// encoder motor
 	
 	RobotDrive driveTrain;
 	JsScaled driveStick;
@@ -20,11 +20,16 @@ public class MecDriveCmd implements cmd {
 	long encoderRightCount;
 	
 	
-	public MecDriveCmd(JsScaled driveStick){
-		driveTrain = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
+	public MecDriveCmd(CANTalon1989 driveFrontLeft, CANTalon1989 driveBackLeft, CANTalon1989 driveFrontRight, CANTalon1989 driveBackRight,
+			JsScaled driveStick){
+		this.driveFrontLeft = driveFrontLeft;
+		this.driveBackLeft = driveBackLeft;
+		this.driveFrontRight = driveFrontRight;
+		this.driveBackRight = driveBackRight;
+		driveTrain = new RobotDrive(driveFrontLeft, driveBackLeft, driveFrontRight, driveBackRight);
 		this.driveStick = driveStick;
-		frontRight.setInverted(true);
-		backRight.setInverted(true);
+		driveFrontRight.setInverted(true);
+		driveBackRight.setInverted(true);
 	}
 	
 

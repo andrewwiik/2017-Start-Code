@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 public class GearPushCmd implements cmd {
 
 	//Class Attributes
-	CANTalon1989 gearPush = new CANTalon1989(6);
+	CANTalon1989 gearPush;
 	JsScaled driveStick;
 	JsScaled utilityStick;
 	Timer gearTimer = new Timer();
