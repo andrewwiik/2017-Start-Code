@@ -48,6 +48,7 @@ public class Robot extends IterativeRobot implements cmd{
 
 	// Instantiating Servo
 	Servo servoX = new Servo(0);
+	
 	Servo servoY = new Servo(1);
 
 	// Instantiating Joysticks
