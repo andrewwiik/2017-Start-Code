@@ -58,13 +58,15 @@ public class Robot extends IterativeRobot implements cmd{
 
 	MecDriveCmd mDrive = new MecDriveCmd(driveStick);
 	CameraControl camControl = new CameraControl(servoX, servoY, driveStick);
+	//GearPushCmd gearPusher = new GearPushCmd(driveStick);
 	@Override
 	public void robotInit() {
 		SharedStuff.cmdlist.add(mDrive);
 		SharedStuff.cmdlist.add(camControl);
+		//SharedStuff.cmdlist.add(gearPusher);
 		camControl.cameraReset();
 		t1.start();
-		
+		CameraServer.getInstance().startAutomaticCapture();
 		
 		//try{
 			//gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
@@ -105,6 +107,8 @@ public class Robot extends IterativeRobot implements cmd{
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 	}
 		
+	
+		
 	if(t1.get() <= 1){
 		System.out.println(mDrive.backLeft.getEncPosition());
 		System.out.println(mDrive.backRight.getEncPosition());
@@ -115,20 +119,9 @@ public class Robot extends IterativeRobot implements cmd{
 		t1.start();
 	}
 	
-	if(driveStick.getRawButton(1) == true){
-		climberLeft.set(-0.75);
-		//climberRight.set(0.5);
-	} else{
-		climberLeft.set(0);
-		//climberRight.set(0);
-	}
-	if(driveStick.getRawButton(2) == true){
-		climberRight.set(-0.75);
-	}
-	else{
-		climberRight.set(0);
-	}
-	if(driveStick.getRawButton(3) == true){
+
+	
+	if(driveStick.getRawButton(6) == true){
 		climberLeft.set(-0.75);
 		climberRight.set(-0.75);
 	} else{
