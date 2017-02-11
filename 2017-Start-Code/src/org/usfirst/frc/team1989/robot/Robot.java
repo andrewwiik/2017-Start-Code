@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-//Martin Pirringer  version
 public class Robot extends IterativeRobot implements cmd{
 	
 	
@@ -100,8 +99,33 @@ public class Robot extends IterativeRobot implements cmd{
 	}
 	@Override
 	public void teleopPeriodic() {
+		// Intialize the Camera
+		
+		
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
+		}
+		
+	
+		
+	if(t1.get() <= 1){
+		System.out.println(mDrive.backLeft.getEncPosition());
+		System.out.println(mDrive.backRight.getEncPosition());
+	}
+	else{
+		t1.stop();
+		t1.reset();
+		t1.start();
+	}
+	
+
+	
+	if(driveStick.getRawButton(6) == true){
+		climberLeft.set(-0.75);
+		climberRight.set(-0.75);
+	} else{
+		climberLeft.set(0);
+		climberRight.set(0);
 	}
 		
 	
@@ -135,7 +159,6 @@ public class Robot extends IterativeRobot implements cmd{
 			//gyro = null;
 		
 		//}
-		
 		
 		
 	}
