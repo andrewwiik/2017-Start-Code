@@ -35,7 +35,7 @@ public class Robot extends IterativeRobot implements cmd{
 	
 	double driveramp = 6.0;
 	public String type = ""; // holds class type
-	public static double Kp = 0.03; // const for multiplying gyro angle 
+	public static double Kp = 0.03; // const for multiplying gyro angle
 
 		
 	int autoStatus = 0;
