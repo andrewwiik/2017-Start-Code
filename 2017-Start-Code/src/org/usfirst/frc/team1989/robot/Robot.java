@@ -26,6 +26,7 @@ public class Robot extends IterativeRobot implements cmd{
 	
 
 	CANTalon1989 climberLeft = new CANTalon1989(4);
+	
 	CANTalon1989 climberRight = new CANTalon1989(2);
 	
 	
