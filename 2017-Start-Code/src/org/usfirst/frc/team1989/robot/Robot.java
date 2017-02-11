@@ -28,6 +28,7 @@ public class Robot extends IterativeRobot implements cmd{
 	CANTalon1989 climberLeft = new CANTalon1989(4);
 	
 	CANTalon1989 climberRight = new CANTalon1989(2);
+	CANTalon1989 gearActuator = new CANTalon1989(6);
 	
 	
 	
@@ -63,6 +64,7 @@ public class Robot extends IterativeRobot implements cmd{
 	//GearPushCmd gearPusher = new GearPushCmd(driveStick);
 	@Override
 	public void robotInit() {
+		CameraServer.getInstance().startAutomaticCapture();
 		SharedStuff.cmdlist.add(mDrive);
 		SharedStuff.cmdlist.add(camControl);
 		//SharedStuff.cmdlist.add(gearPusher);
@@ -105,8 +107,12 @@ public class Robot extends IterativeRobot implements cmd{
 	}
 	@Override
 	public void teleopPeriodic() {
+		// Intialize the Camera
+		
+		
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
+<<<<<<< HEAD
 	}
 		
 	
@@ -132,6 +138,9 @@ public class Robot extends IterativeRobot implements cmd{
 	}
 	
 		
+=======
+		}
+>>>>>>> refs/remotes/origin/master
 		//try{
 			//gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 		
@@ -141,8 +150,14 @@ public class Robot extends IterativeRobot implements cmd{
 		
 		//}
 		
-		
-		
+		// Push gear actuator
+		if (driveStick.getRawButton(6) == true){
+			gearActuator.set(.5);
+		}
+		// Retract gear actuator
+		if(driveStick.getRawButton(4) == true){
+			gearActuator.set(-.5);
+		}
 	}
 
 	/**
