@@ -21,23 +21,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
+//Martin Pirringer  version
 public class Robot extends IterativeRobot implements cmd{
 	
 	
-	CANTalon1989 frontLeft = new CANTalon1989(3);
-	CANTalon1989 frontRight = new CANTalon1989(9);
-	CANTalon1989 backLeft = new CANTalon1989(7);
-	CANTalon1989 backRight = new CANTalon1989(5);
+
 	CANTalon1989 climberLeft = new CANTalon1989(4);
-	CANTalon1989 climberRight = new CANTalon1989(2);
 	
-	Gyro gyro;
-
-
+	CANTalon1989 climberRight = new CANTalon1989(2);
 	
 	double driveramp = 6.0;
 	public String type = ""; // holds class type
-	public static double Kp = 0.03; // const for multiplying gyro angle 
+	public static double Kp = 0.03; // const for multiplying gyro angle
 
 		
 	int autoStatus = 0;
@@ -49,7 +44,7 @@ public class Robot extends IterativeRobot implements cmd{
 
 	// Instantiating Servo
 	Servo servoX = new Servo(0);
-	Servo servoY = new Servo(2);
+	Servo servoY = new Servo(1);
 
 	// Instantiating Joysticks
 	JsScaled driveStick = new JsScaled(0);
@@ -58,16 +53,17 @@ public class Robot extends IterativeRobot implements cmd{
 
 
 
-	MecDriveCmd mDrive = new MecDriveCmd(frontLeft, backLeft, frontRight, backRight, driveStick);
+	MecDriveCmd mDrive = new MecDriveCmd(driveStick);
 	CameraControl camControl = new CameraControl(servoX, servoY, driveStick);
+	//GearPushCmd gearPusher = new GearPushCmd(driveStick);
 	@Override
 	public void robotInit() {
 		SharedStuff.cmdlist.add(mDrive);
 		SharedStuff.cmdlist.add(camControl);
+		//SharedStuff.cmdlist.add(gearPusher);
 		camControl.cameraReset();
 		t1.start();
-		frontRight.setInverted(true);
-		backRight.setInverted(true);
+		CameraServer.getInstance().startAutomaticCapture();
 		
 		//try{
 			//gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
@@ -107,6 +103,30 @@ public class Robot extends IterativeRobot implements cmd{
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 	}
+		
+	
+		
+	if(t1.get() <= 1){
+		System.out.println(mDrive.backLeft.getEncPosition());
+		System.out.println(mDrive.backRight.getEncPosition());
+	}
+	else{
+		t1.stop();
+		t1.reset();
+		t1.start();
+	}
+	
+
+	
+	if(driveStick.getRawButton(6) == true){
+		climberLeft.set(-0.75);
+		climberRight.set(-0.75);
+	} else{
+		climberLeft.set(0);
+		climberRight.set(0);
+	}
+	
+		
 		//try{
 			//gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
 		
@@ -125,9 +145,30 @@ public class Robot extends IterativeRobot implements cmd{
 	 */
 	@Override
 	public void testPeriodic() {
+		if(driveStick.getRawButton(1) == true){
+			climberLeft.set(0.5);
+			//climberRight.set(0.5);
+		} else{
+			climberLeft.set(0);
+			//climberRight.set(0);
+		}
+		if(driveStick.getRawButton(2) == true){
+			climberRight.set(0.5);
+		}
+		else{
+			climberRight.set(0);
+		}
+		if(driveStick.getRawButton(3) == true){
+			climberLeft.set(0.5);
+			climberRight.set(0.5);
+		} else{
+			climberLeft.set(0);
+			climberRight.set(0);
+		}
+		
+		
 	}
-	
-
+		
 	}
 
 	
