@@ -2,8 +2,17 @@ package org.usfirst.frc.team1989.robot;
 
 public class ClimberCmd implements cmd{
 
-	public ClimberCmd(){
-		
+	
+	CANTalon1989 climberLeft; //encoder
+	CANTalon1989 climberRight;
+	JsScaled driveStick;
+	
+	
+	
+	public ClimberCmd(CANTalon1989 climberLeft, CANTalon1989 climberRight, JsScaled driveStick){
+		this.climberLeft = climberLeft;
+		this.climberRight = climberRight;
+		this.driveStick = driveStick;
 	}
 	
 	

@@ -36,27 +36,27 @@ public class GearPushCmd implements cmd {
 	public void gearPush(){
 		if (state == 0){
 			state = 1;
-			gearPush.set(-1);
-			gearTimer.stop();
 			gearTimer.reset();
+			gearTimer.stop();
 			gearTimer.start();
 		}	
 		else if (state == 1){
 			gearPush.set(-1);
-			if (gearTimer.get() > 1){
+			if (gearTimer.get() > 2){
 				state = 2;
-				gearPush.set(1);
-				gearTimer.stop();
+				gearPush.set(0);
 				gearTimer.reset();
+				gearTimer.stop();
 				gearTimer.start();
 			}
 		}
 		else if (state == 2){
 			gearPush.set(1);
-			if (gearTimer.get() > 1){
+			if (gearTimer.get() > 2){
 				state = 3;
-				gearTimer.stop();
 				gearTimer.reset();
+				gearTimer.stop();
+			
 			}
 		}
 		else if (state == 3){
@@ -109,7 +109,7 @@ public class GearPushCmd implements cmd {
 	public void teleopPeriodic() {
 		// TODO Auto-generated method stub
 		if(driveStick.getRawButton(3) == true){
-			gearPushSet();
+			gearPush();
 		}
 		if(finished == false){
 			gearPush();
