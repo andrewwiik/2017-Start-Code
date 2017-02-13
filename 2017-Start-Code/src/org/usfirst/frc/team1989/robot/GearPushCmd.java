@@ -12,7 +12,7 @@ public class GearPushCmd implements cmd {
 	JsScaled utilityStick;
 	Timer gearTimer = new Timer();
 	int state = 0;
-	boolean finished = true;
+	boolean pushRoutine = false;
 	
 	
 	//Constructor
@@ -29,29 +29,34 @@ public class GearPushCmd implements cmd {
 		this.gearPush = gearPush;
 	}
 	//Class Method
-	public void gearPushSet(){
-		finished = false;
+	public void gearPushStart(){
+		System.out.println("Start the routine");
+		pushRoutine = true;
 	}
 	
+	// Push the gear based on 
 	public void gearPush(){
 		if (state == 0){
+			System.out.println("Start state 0");
 			state = 1;
 			gearTimer.reset();
 			gearTimer.stop();
 			gearTimer.start();
 		}	
 		else if (state == 1){
-			gearPush.set(-1);
+			System.out.println("Start state 1");
+			pushFoward();
 			if (gearTimer.get() > 2){
 				state = 2;
-				gearPush.set(0);
+				pushStop();
 				gearTimer.reset();
 				gearTimer.stop();
 				gearTimer.start();
 			}
 		}
 		else if (state == 2){
-			gearPush.set(1);
+			System.out.println("Start state 2");
+			pushBack();
 			if (gearTimer.get() > 2){
 				state = 3;
 				gearTimer.reset();
@@ -60,18 +65,22 @@ public class GearPushCmd implements cmd {
 			}
 		}
 		else if (state == 3){
+			System.out.println("Start state 3");
 			state = 0;
-			gearPush.set(0);
-			finished = true;
+			pushStop();
+			pushRoutine = false;
 		}		
 	}
 	
 	
-	public void Foward(){
+	public void pushFoward(){
 		gearPush.set(-1);
 	}
-	public void Back(){
+	public void pushBack(){
 		gearPush.set(1);
+	}
+	public void pushStop(){
+		gearPush.set(0);
 	}
 	
 	
@@ -107,11 +116,13 @@ public class GearPushCmd implements cmd {
 
 	@Override
 	public void teleopPeriodic() {
-		// TODO Auto-generated method stub
-		if(driveStick.getRawButton(3) == true){
-			gearPush();
+		// If depress trigger and not running, start the routine.
+		if(driveStick.getRawButton(3) == true && pushRoutine == false){
+			gearPushStart();
 		}
-		if(finished == false){
+		
+		// If the routine has started allow it to continue
+		if(pushRoutine == true){
 			gearPush();
 		}
 		
