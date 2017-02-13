@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1989.robot;
 
 import com.ctre.CANTalon;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 
 public class GearPushCmd implements cmd {
@@ -44,20 +44,24 @@ public class GearPushCmd implements cmd {
 			gearTimer.start();
 		}	
 		else if (state == 1){
+			SmartDashboard.putString("DB/String 0", "Start state 1");
 			System.out.println("Start state 1");
 			pushFoward();
-			if (gearTimer.get() > 2){
+			//gearPush.set(-1);
+			if (gearTimer.get() > 1){
 				state = 2;
-				pushStop();
+				//pushStop();
 				gearTimer.reset();
 				gearTimer.stop();
 				gearTimer.start();
 			}
 		}
 		else if (state == 2){
+			SmartDashboard.putString("DB/String 1", "Start state 2");
 			System.out.println("Start state 2");
 			pushBack();
-			if (gearTimer.get() > 2){
+			//gearPush.set(1);
+			if (gearTimer.get() > 1){
 				state = 3;
 				gearTimer.reset();
 				gearTimer.stop();
@@ -65,6 +69,7 @@ public class GearPushCmd implements cmd {
 			}
 		}
 		else if (state == 3){
+			SmartDashboard.putString("DB/String 2", "Start state 3");
 			System.out.println("Start state 3");
 			state = 0;
 			pushStop();
@@ -74,10 +79,12 @@ public class GearPushCmd implements cmd {
 	
 	
 	public void pushFoward(){
-		gearPush.set(-1);
+		gearPush.set(-.75);
+		SmartDashboard.putString("DB/String 5", " " + gearPush.get());
 	}
 	public void pushBack(){
-		gearPush.set(1);
+		gearPush.set(.75);
+		SmartDashboard.putString("DB/String 6", " " + gearPush.get());
 	}
 	public void pushStop(){
 		gearPush.set(0);
@@ -126,15 +133,14 @@ public class GearPushCmd implements cmd {
 			gearPush();
 		}
 		
-		
-		if(driveStick.getRawButton(10) == true){
-			gearPush.set(-1);
-		}
-		else if(driveStick.getRawButton(11) == true){
-			gearPush.set(1);
-		}
-		else{
-			gearPush.set(0);
+		if(pushRoutine == false){
+			if(driveStick.getRawButton(10) == true){
+				gearPush.set(-1);
+			} else if(driveStick.getRawButton(11) == true) {
+				gearPush.set(1);
+			} else {
+				gearPush.set(0);
+			}
 		}
 		
 	}
