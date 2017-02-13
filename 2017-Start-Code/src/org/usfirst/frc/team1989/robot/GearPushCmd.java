@@ -1,7 +1,7 @@
 package org.usfirst.frc.team1989.robot;
 
 import com.ctre.CANTalon;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Timer;
 
 public class GearPushCmd implements cmd {
@@ -12,7 +12,7 @@ public class GearPushCmd implements cmd {
 	JsScaled utilityStick;
 	Timer gearTimer = new Timer();
 	int state = 0;
-	boolean finished = true;
+	boolean pushRoutine = false;
 	
 	
 	//Constructor
@@ -29,49 +29,65 @@ public class GearPushCmd implements cmd {
 		this.gearPush = gearPush;
 	}
 	//Class Method
-	public void gearPushSet(){
-		finished = false;
+	public void gearPushStart(){
+		System.out.println("Start the routine");
+		pushRoutine = true;
 	}
 	
+	// Push the gear based on 
 	public void gearPush(){
 		if (state == 0){
+			System.out.println("Start state 0");
 			state = 1;
-			gearPush.set(-1);
-			gearTimer.stop();
 			gearTimer.reset();
+			gearTimer.stop();
 			gearTimer.start();
 		}	
 		else if (state == 1){
-			gearPush.set(-1);
+			SmartDashboard.putString("DB/String 0", "Start state 1");
+			System.out.println("Start state 1");
+			pushFoward();
+			//gearPush.set(-1);
 			if (gearTimer.get() > 1){
 				state = 2;
-				gearPush.set(1);
-				gearTimer.stop();
+				//pushStop();
 				gearTimer.reset();
+				gearTimer.stop();
 				gearTimer.start();
 			}
 		}
 		else if (state == 2){
-			gearPush.set(1);
+			SmartDashboard.putString("DB/String 1", "Start state 2");
+			System.out.println("Start state 2");
+			pushBack();
+			//gearPush.set(1);
 			if (gearTimer.get() > 1){
 				state = 3;
-				gearTimer.stop();
 				gearTimer.reset();
+				gearTimer.stop();
+			
 			}
 		}
 		else if (state == 3){
+			SmartDashboard.putString("DB/String 2", "Start state 3");
+			System.out.println("Start state 3");
 			state = 0;
-			gearPush.set(0);
-			finished = true;
+			pushStop();
+			pushRoutine = false;
 		}		
 	}
 	
 	
-	public void Foward(){
-		gearPush.set(-1);
+	public void pushFoward(){
+		gearPush.set(-.75);
+		SmartDashboard.putString("DB/String 5", " " + gearPush.get());
 	}
-	public void Back(){
-		gearPush.set(1);
+	public void pushBack(){
+		gearPush.set(.75);
+		SmartDashboard.putString("DB/String 6", " " + gearPush.get());
+	}
+	public void pushStop(){
+		gearPush.set(0);
 	}
 	
 	
@@ -107,23 +123,24 @@ public class GearPushCmd implements cmd {
 
 	@Override
 	public void teleopPeriodic() {
-		// TODO Auto-generated method stub
-		if(driveStick.getRawButton(3) == true){
-			gearPushSet();
+		// If depress trigger and not running, start the routine.
+		if(driveStick.getRawButton(3) == true && pushRoutine == false){
+			gearPushStart();
 		}
-		if(finished == false){
+		
+		// If the routine has started allow it to continue
+		if(pushRoutine == true){
 			gearPush();
 		}
 		
-		
-		if(driveStick.getRawButton(10) == true){
-			gearPush.set(-1);
-		}
-		else if(driveStick.getRawButton(11) == true){
-			gearPush.set(1);
-		}
-		else{
-			gearPush.set(0);
+		if(pushRoutine == false){
+			if(driveStick.getRawButton(10) == true){
+				gearPush.set(-1);
+			} else if(driveStick.getRawButton(11) == true) {
+				gearPush.set(1);
+			} else {
+				gearPush.set(0);
+			}
 		}
 		
 	}
