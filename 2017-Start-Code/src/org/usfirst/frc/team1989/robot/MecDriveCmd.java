@@ -26,10 +26,10 @@ public class MecDriveCmd implements cmd {
 		this.driveBackLeft = driveBackLeft;
 		this.driveFrontRight = driveFrontRight;
 		this.driveBackRight = driveBackRight;
-		driveTrain = new RobotDrive(driveFrontLeft, driveBackLeft, driveFrontRight, driveBackRight);
+		driveTrain = new RobotDrive(this.driveFrontLeft, this.driveBackLeft, this.driveFrontRight, this.driveBackRight);
 		this.driveStick = driveStick;
-		driveFrontRight.setInverted(true);
-		driveBackRight.setInverted(true);
+		this.driveFrontRight.setInverted(true);
+		this.driveBackRight.setInverted(true);
 	}
 	
 
