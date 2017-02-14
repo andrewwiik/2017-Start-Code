@@ -27,11 +27,12 @@ public class Robot extends IterativeRobot implements cmd{
 	CANTalon1989 driveFrontLeft = new CANTalon1989(3);
 	CANTalon1989 driveFrontRight = new CANTalon1989(9);
 	CANTalon1989 driveBackLeft = new CANTalon1989(7);
-	CANTalon1989 driveBackRight = new CANTalon1989(5);
+	CANTalon1989 driveBackRight = new CANTalon1989(25);
 	CANTalon1989 climberLeft = new CANTalon1989(4);
 	CANTalon1989 climberRight = new CANTalon1989(2);
 	CANTalon1989 gearMotor = new CANTalon1989(6);
 	
+	Integer tmpint = new Integer(0);
 
 
 	
@@ -58,26 +59,26 @@ public class Robot extends IterativeRobot implements cmd{
 	Gyro gyro;
 
 
-	MecDriveCmd mDrive = new MecDriveCmd(driveFrontLeft, driveBackLeft, driveFrontRight, driveFrontRight, driveStick);
+	MecDriveCmd mDrive = new MecDriveCmd(driveFrontLeft, driveBackLeft, driveFrontRight, driveBackRight, driveStick);
 	CameraControl camControl = new CameraControl(servoX, servoY, driveStick);
 	GearPushCmd gearPusher = new GearPushCmd(gearMotor, driveStick);
 	@Override
 	public void robotInit() {
 		SharedStuff.cmdlist.add(mDrive);
-		SharedStuff.cmdlist.add(camControl);
-		SharedStuff.cmdlist.add(gearPusher);
+		//SharedStuff.cmdlist.add(camControl);
+		//SharedStuff.cmdlist.add(gearPusher);
 		camControl.cameraReset();
 		t1.start();
 		CameraServer.getInstance().startAutomaticCapture();
 		
-		try{
+		/*try{
 			gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-			System.out.println("gyro connected");
+			//System.out.println("gyro connected");
 		}
 		catch (NullPointerException e){
 			gyro = null;
-			System.out.println("gyro not connected");
-		}
+			//System.out.println("gyro not connected");
+		}*/
 	}
 
 	
@@ -105,25 +106,29 @@ public class Robot extends IterativeRobot implements cmd{
 	}
 	@Override
 	public void teleopPeriodic() {
+		
+		
+		tmpint ++;
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
 		
 	
 		
-	if(t1.get() <= 1){
-		System.out.println(mDrive.driveBackLeft.getEncPosition());
-		System.out.println(mDrive.driveBackRight.getEncPosition());
-	}
-	else{
+	if(t1.get() >= 1){
+		//System.out.println(mDrive.driveBackLeft.getEncPosition());
+		//System.out.println(mDrive.driveBackRight.getEncPosition());
+		//System.out.println("count " + tmpint);
+		tmpint = 0;
 		t1.stop();
 		t1.reset();
 		t1.start();
 	}
-	
 
 	
-	if(driveStick.getRawButton(6) == true){
+	if(driveStick.getRawButton(6) == true){	
+
+
 		climberLeft.set(-0.75);
 		climberRight.set(-0.75);
 	} else{
