@@ -62,11 +62,13 @@ public class Robot extends IterativeRobot implements cmd{
 	MecDriveCmd mDrive = new MecDriveCmd(driveFrontLeft, driveBackLeft, driveFrontRight, driveBackRight, driveStick);
 	CameraControl camControl = new CameraControl(servoX, servoY, driveStick);
 	GearPushCmd gearPusher = new GearPushCmd(gearMotor, driveStick);
+	ClimberCmd climber = new ClimberCmd(climberLeft, climberRight, driveStick);
 	@Override
 	public void robotInit() {
 		SharedStuff.cmdlist.add(mDrive);
-		//SharedStuff.cmdlist.add(camControl);
-		//SharedStuff.cmdlist.add(gearPusher);
+		SharedStuff.cmdlist.add(camControl);
+		SharedStuff.cmdlist.add(gearPusher);
+		SharedStuff.cmdlist.add(climber);
 		camControl.cameraReset();
 		t1.start();
 		CameraServer.getInstance().startAutomaticCapture();
@@ -114,8 +116,8 @@ public class Robot extends IterativeRobot implements cmd{
 		}
 		
 	
-		
-	if(t1.get() >= 1){
+	// From Mr. P - Count the number of times we run "periodically" during a second.
+	/*if(t1.get() >= 1){
 		//System.out.println(mDrive.driveBackLeft.getEncPosition());
 		//System.out.println(mDrive.driveBackRight.getEncPosition());
 		//System.out.println("count " + tmpint);
@@ -123,10 +125,10 @@ public class Robot extends IterativeRobot implements cmd{
 		t1.stop();
 		t1.reset();
 		t1.start();
-	}
+	}*/
 
-	
-	if(driveStick.getRawButton(6) == true){	
+	// Drive Code Test
+	/*if(driveStick.getRawButton(6) == true){	
 
 
 		climberLeft.set(-0.75);
@@ -134,7 +136,7 @@ public class Robot extends IterativeRobot implements cmd{
 	} else{
 		climberLeft.set(0);
 		climberRight.set(0);
-	}
+	}*/
 	
 		
 	

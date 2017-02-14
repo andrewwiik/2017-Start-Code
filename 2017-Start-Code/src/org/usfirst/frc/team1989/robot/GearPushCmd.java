@@ -79,11 +79,11 @@ public class GearPushCmd implements cmd {
 	
 	public void pushFoward(){
 		gearPush.set(-.6);
-		SmartDashboard.putString("DB/String 5", " " + gearPush.get());
+		//SmartDashboard.putString("DB/String 5", " " + gearPush.get());
 	}
 	public void pushBack(){
 		gearPush.set(.4);
-		SmartDashboard.putString("DB/String 6", " " + gearPush.get());
+		//SmartDashboard.putString("DB/String 6", " " + gearPush.get());
 	}
 	public void pushStop(){
 		gearPush.set(0);
