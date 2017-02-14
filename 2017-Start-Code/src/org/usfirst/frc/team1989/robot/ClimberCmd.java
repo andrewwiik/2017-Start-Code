@@ -14,6 +14,9 @@ public class ClimberCmd implements cmd{
 		this.climberRight = climberRight;
 		this.driveStick = driveStick;
 	}
+	public ClimberCmd(CANTalon1989 climberLeft, JsScaled driveStick){
+		
+	}
 	
 	
 	
