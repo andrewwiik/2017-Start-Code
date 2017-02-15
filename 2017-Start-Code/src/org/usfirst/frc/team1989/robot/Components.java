@@ -8,7 +8,7 @@ public final class Components {
 	static CANTalon1989 driveFrontLeft = new CANTalon1989(3);
 	static CANTalon1989 driveFrontRight = new CANTalon1989(9);
 	static CANTalon1989 driveBackLeft = new CANTalon1989(7);
-	static CANTalon1989 driveBackRight = new CANTalon1989(25);
+	static CANTalon1989 driveBackRight = new CANTalon1989(5);
 	static CANTalon1989 climberLeft = new CANTalon1989(4);
 	static CANTalon1989 climberRight = new CANTalon1989(2);
 	static CANTalon1989 gearMotor = new CANTalon1989(6);

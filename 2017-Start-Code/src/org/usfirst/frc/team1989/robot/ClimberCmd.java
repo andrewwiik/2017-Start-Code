@@ -129,7 +129,23 @@ public class ClimberCmd implements cmd{
 			
 		}
 		
+		// If we aren't in the preset routine, allow user activated controls
+		if(climberRoutine == false){
+			if(driveStick.getRawButton(4) == true){
+				climberLift();
+				/*climberLeft.set(-1);
+				climberRight.set(-1);*/
+			} else if (driveStick.getRawButton(6) == true){
+				climberDrop();
+				/*climberLeft.set(1);
+				climberRight.set(1);*/
+			}
+			else{
+				climberLeft.set(0);
+				climberRight.set(0);
+			}
 		
+		}
 	}
 
 }
