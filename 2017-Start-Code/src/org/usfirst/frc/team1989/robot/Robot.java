@@ -25,20 +25,12 @@ public class Robot extends IterativeRobot implements cmd{
 
 	// Define class attributes
 	Integer tmpint;
-	double driveramp;
-	public String type; // holds class type
-	public static double Kp; // const for multiplying gyro angle
 	int autoStatus;
 	int autoMode;;
 	Timer t1;
 	
 	@Override
 	public void robotInit() {
-		// Assign values for attributes
-		driveramp = 6.0;
-		type = ""; // holds class type
-		Kp = 0.03; // const for multiplying gyro angle
-
 		// Implement the functions for the components
 		MecDriveCmd mDrive = new MecDriveCmd(Components.driveFrontLeft, Components.driveBackLeft, Components.driveFrontRight, Components.driveBackRight, Components.driveStick);
 		CameraControl camControl = new CameraControl(Components.servoX, Components.servoY, Components.driveStick);
