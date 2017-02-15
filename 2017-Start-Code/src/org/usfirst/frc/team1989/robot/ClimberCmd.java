@@ -6,8 +6,8 @@ public class ClimberCmd implements cmd{
 	CANTalon1989 climberLeft; //encoder
 	CANTalon1989 climberRight;
 	JsScaled driveStick;
-	int encoderStopPos = 0;
-	boolean climberRoutine = false;
+	int encoderStopPos;
+	boolean climberRoutine;
 	
 	// Constructor with 2 motors - needed after last motor was placed onto robot	
 	public ClimberCmd(CANTalon1989 climberLeft, CANTalon1989 climberRight, JsScaled driveStick){
@@ -89,7 +89,8 @@ public class ClimberCmd implements cmd{
 	@Override
 	public void teleopInit() {
 		// TODO Auto-generated method stub
-		
+		encoderStopPos = 0;
+		climberRoutine = false;
 	}
 
 	@Override

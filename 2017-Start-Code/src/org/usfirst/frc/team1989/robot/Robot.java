@@ -22,48 +22,47 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot implements cmd{
+
+	// Define class attributes
+	Integer tmpint;
+	double driveramp;
+	public String type; // holds class type
+	public static double Kp; // const for multiplying gyro angle
+	int autoStatus;
+	int autoMode;;
+	Timer t1;
 	
-	Integer tmpint = new Integer(0);
-
-	double driveramp = 6.0;
-	public String type = ""; // holds class type
-	public static double Kp = 0.03; // const for multiplying gyro angle
-
-		
-	int autoStatus = 0;
-	int autoMode = 0;
-
-	// Instantiating Timer
-	Timer t1 = new Timer();
-	
-	MecDriveCmd mDrive = new MecDriveCmd(Components.driveFrontLeft, Components.driveBackLeft, Components.driveFrontRight, Components.driveBackRight, Components.driveStick);
-	CameraControl camControl = new CameraControl(Components.servoX, Components.servoY, Components.driveStick);
-	GearPushCmd gearPusher = new GearPushCmd(Components.gearMotor, Components.driveStick);
-	ClimberCmd climber = new ClimberCmd(Components.climberLeft, Components.climberRight, Components.driveStick);
 	@Override
 	public void robotInit() {
+		// Assign values for attributes
+		driveramp = 6.0;
+		type = ""; // holds class type
+		Kp = 0.03; // const for multiplying gyro angle
+
+		// Implement the functions for the components
+		MecDriveCmd mDrive = new MecDriveCmd(Components.driveFrontLeft, Components.driveBackLeft, Components.driveFrontRight, Components.driveBackRight, Components.driveStick);
+		CameraControl camControl = new CameraControl(Components.servoX, Components.servoY, Components.driveStick);
+		GearPushCmd gearPusher = new GearPushCmd(Components.gearMotor, Components.driveStick);
+		ClimberCmd climber = new ClimberCmd(Components.climberLeft, Components.climberRight, Components.driveStick);
+		
+		// Add functions to the cmdlist
 		SharedStuff.cmdlist.add(mDrive);
 		SharedStuff.cmdlist.add(camControl);
 		SharedStuff.cmdlist.add(gearPusher);
 		SharedStuff.cmdlist.add(climber);
+		
+		// Activate the camera 
 		camControl.cameraReset();
-		t1.start();
 		CameraServer.getInstance().startAutomaticCapture();
 		
-		/*try{
-			gyro = new ADXRS450_Gyro(SPI.Port.kOnboardCS0);
-			//System.out.println("gyro connected");
-		}
-		catch (NullPointerException e){
-			gyro = null;
-			//System.out.println("gyro not connected");
-		}*/
+		//t1.start();
 	}
 
 	
 	@Override
 	public void autonomousInit() {
-		
+		autoStatus = 0;
+		autoMode = 0;
 	}
 
 	/**
@@ -78,54 +77,46 @@ public class Robot extends IterativeRobot implements cmd{
 	/**
 	 * This function is called periodically during operator control
 	 */
-	
-	
 	public void teleopInit(){
 		
 	}
 	@Override
 	public void teleopPeriodic() {
-		
-		
-		tmpint ++;
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
-		
-	
-		// From Mr. P - Count the number of times we run "periodically" during a second.
-		/*if(t1.get() >= 1){
-			//System.out.println(mDrive.driveBackLeft.getEncPosition());
-			//System.out.println(mDrive.driveBackRight.getEncPosition());
-			//System.out.println("count " + tmpint);
-			tmpint = 0;
-			t1.stop();
-			t1.reset();
-			t1.start();
-		}*/
-	
-		// Drive Code Test
-		/*if(driveStick.getRawButton(6) == true){	
-	
-	
-			climberLeft.set(-0.75);
-			climberRight.set(-0.75);
-		} else{
-			climberLeft.set(0);
-			climberRight.set(0);
-		}*/
-	
-		
-	
-		
 	}
 
+	public void testInit(){
+		// Values for testing the number of times a second that we run our periodic
+		tmpint = new Integer(0);
+		t1 = new Timer();
+	}
 	/**
 	 * This function is called periodically during test mode
 	 */
 	@Override
 	public void testPeriodic() {
-
+		
+		// Find out how often we run
+		if(t1.get() >= 1){
+			//System.out.println(mDrive.driveBackLeft.getEncPosition());
+			//System.out.println(mDrive.driveBackRight.getEncPosition());
+			//System.out.println("count " + tmpint);
+			tmpint ++;
+			t1.stop();
+			t1.reset();
+			t1.start();
+		}
+		
+		// Climber Test Code
+		if(Components.driveStick.getRawButton(6) == true){	
+			Components.climberLeft.set(-0.75);
+			Components.climberRight.set(-0.75);
+		} else{
+			Components.climberLeft.set(0);
+			Components.climberRight.set(0);
+		}
 		
 	}
 }
