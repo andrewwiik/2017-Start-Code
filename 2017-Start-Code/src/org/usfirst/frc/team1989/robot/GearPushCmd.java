@@ -78,11 +78,11 @@ public class GearPushCmd implements cmd {
 	
 	
 	public void pushFoward(){
-		gearPush.set(-.6);
+		gearPush.set(.6);
 		//SmartDashboard.putString("DB/String 5", " " + gearPush.get());
 	}
 	public void pushBack(){
-		gearPush.set(.4);
+		gearPush.set(-.6);
 		//SmartDashboard.putString("DB/String 6", " " + gearPush.get());
 	}
 	public void pushStop(){
@@ -123,7 +123,7 @@ public class GearPushCmd implements cmd {
 	@Override
 	public void teleopPeriodic() {
 		// If depress trigger and not running, start the routine.
-		if(driveStick.getRawButton(3) == true && pushRoutine == false){
+		if(driveStick.getRawButton(12) == true && pushRoutine == false){
 			gearPushStart();
 		}
 		
@@ -134,11 +134,11 @@ public class GearPushCmd implements cmd {
 		
 		if(pushRoutine == false){
 			if(driveStick.getRawButton(10) == true){
-				gearPush.set(-1);
+				pushBack();
 			} else if(driveStick.getRawButton(11) == true) {
-				gearPush.set(1);
+				pushFoward();
 			} else {
-				gearPush.set(0);
+				pushStop();
 			}
 		}
 		
