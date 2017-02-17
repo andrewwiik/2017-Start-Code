@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1989.robot;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.RobotDrive.MotorType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.CANTalon;
 public class MecDriveCmd implements cmd {
@@ -16,8 +17,8 @@ public class MecDriveCmd implements cmd {
 	JsScaled driveStick;
 	
 ;
-	long encoderLeftCount;
-	long encoderRightCount;
+	Integer encoderLeftCount;
+	Integer encoderRightCount;
 	
 	
 	public MecDriveCmd(CANTalon1989 driveFrontLeft, CANTalon1989 driveBackLeft, CANTalon1989 driveFrontRight, CANTalon1989 driveBackRight,
@@ -32,6 +33,34 @@ public class MecDriveCmd implements cmd {
 		this.driveBackRight.setInverted(true);
 	}
 	
+	
+	public void encoderCheck(){
+		if(Math.abs(driveStick.sgetTwist()) < 0.1 && Math.abs(driveStick.sgetX()) < 0.1 && Math.abs(driveStick.sgetY()) > 0.1){
+			encoderLeftCount = driveBackLeft.getEncPosition();
+			encoderRightCount = driveBackRight.getEncPosition();
+			Components.writemessage.setmessage(0, encoderLeftCount.toString());
+			Components.writemessage.setmessage(1, encoderRightCount.toString());
+			
+		} else if(Math.abs(driveStick.sgetTwist()) > 0.1 || Math.abs(driveStick.sgetX()) > 0.1){
+			encoderLeftCount = 0;
+			encoderRightCount = 0;
+			Components.writemessage.setmessage(0, encoderLeftCount.toString());
+			Components.writemessage.setmessage(0, encoderRightCount.toString());
+		}
+			
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 	public void autonomousInit(){}
 	public void autonomousPeriodic() {
@@ -39,11 +68,11 @@ public class MecDriveCmd implements cmd {
 	}
 	public void teleopInit(){}
 	public void teleopPeriodic(){
-		
-		
+			encoderCheck();
+			
+			
 			driveTrain.mecanumDrive_Cartesian(driveStick.sgetX(), driveStick.sgetY(), driveStick.sgetTwist(), 0);
-		
-		
+			Components.writemessage.updatedash();
 	}
 	public void testInit(){}
 	public void testPeriodic(){

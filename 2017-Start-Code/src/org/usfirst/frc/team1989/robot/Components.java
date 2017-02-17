@@ -12,6 +12,8 @@ public final class Components {
 	static CANTalon1989 climberLeft = new CANTalon1989(4);
 	static CANTalon1989 climberRight = new CANTalon1989(2);
 	static CANTalon1989 gearMotor = new CANTalon1989(6);
+	static CANTalon1989 ballConveyor = new CANTalon1989(1);
+	static CANTalon1989 ballOutputWheel = new CANTalon1989(10);
 	
 	// Instantiating Servo
 	static Servo servoX = new Servo(0);
@@ -23,5 +25,7 @@ public final class Components {
 	
 	// Instantiate Gyro (Doesn't work)
 	static Gyro gyro;
+	
+	static writemessage writemessage = new writemessage();
 
 }

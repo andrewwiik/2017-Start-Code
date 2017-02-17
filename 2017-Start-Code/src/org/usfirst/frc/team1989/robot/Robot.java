@@ -36,12 +36,14 @@ public class Robot extends IterativeRobot implements cmd{
 		CameraControl camControl = new CameraControl(Components.servoX, Components.servoY, Components.driveStick);
 		GearPushCmd gearPusher = new GearPushCmd(Components.gearMotor, Components.driveStick);
 		ClimberCmd climber = new ClimberCmd(Components.climberLeft, Components.climberRight, Components.driveStick);
+		BallSystemCmd ballSystem = new BallSystemCmd(Components.ballConveyor, Components.ballOutputWheel, Components.driveStick);
 		
 		// Add functions to the cmdlist
 		SharedStuff.cmdlist.add(mDrive);
 		SharedStuff.cmdlist.add(camControl);
 		SharedStuff.cmdlist.add(gearPusher);
 		SharedStuff.cmdlist.add(climber);
+		SharedStuff.cmdlist.add(ballSystem);
 		
 		// Activate the camera 
 		camControl.cameraReset();
@@ -70,13 +72,16 @@ public class Robot extends IterativeRobot implements cmd{
 	 * This function is called periodically during operator control
 	 */
 	public void teleopInit(){
-		
+		Components.driveBackLeft.setEncPosition(0);
+		Components.driveBackRight.setEncPosition(0);
 	}
 	@Override
 	public void teleopPeriodic() {
 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
 			SharedStuff.cmdlist.get(i).teleopPeriodic();
 		}
+		
+		
 	}
 
 	public void testInit(){
