@@ -89,6 +89,7 @@ public class MecDriveCmd implements cmd {
 	
 	
 	public void testPeriodic(){
+		//driveTrain.mecanumDrive_Cartesian(driveStick.pX, driveStick.pY, driveStick.pTwist,0);//Last 0 is gyro angle needs to be checked if we get one
 		// Display encoder values
 		encoderCheck();
 		encoderDrive();
