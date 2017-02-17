@@ -1,5 +1,8 @@
 package org.usfirst.frc.team1989.robot;
 
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 public class ClimberCmd implements cmd{
 
 	// Attributes: 2 motors, joystick, encoder position, and a toggle for the process.
@@ -7,7 +10,7 @@ public class ClimberCmd implements cmd{
 	CANTalon1989 climberRight;
 	JsScaled driveStick;
 	int encoderStopPos;
-	boolean climberRoutine;
+	boolean climberRoutine = false;
 	
 	// Constructor with 2 motors - needed after last motor was placed onto robot	
 	public ClimberCmd(CANTalon1989 climberLeft, CANTalon1989 climberRight, JsScaled driveStick){
@@ -26,6 +29,8 @@ public class ClimberCmd implements cmd{
 	public void climberLift(){
 		climberLeft.set(-1);
 		climberRight.set(-1);
+		//SmartDashboard.putString("DB/String 0", Components.climberLeft.getEncPosition());
+		
 	}
 	
 	// Drop the robot down the rope
@@ -43,7 +48,7 @@ public class ClimberCmd implements cmd{
 	// Have motors hold robot's position
 	public void climberActive(){
 		encoderStopPos = climberLeft.getEncPosition();
-		climberRoutine = true;
+		climberRoutine = !climberRoutine;
 	}
 	
 	// Will keep the climber at a set position using encoder values need to check electrical constraints
@@ -95,39 +100,23 @@ public class ClimberCmd implements cmd{
 
 	@Override
 	public void teleopPeriodic() {
-		
+		//SmartDashboard.putNumber("DB/String 0", Components.climberLeft.getEncPosition());
 		// If button is clicked, begin the routine.
-		if(driveStick.getRawButton(9) == true){
-			climberActive();
-		}
+		//if(driveStick.getRawButton(9) == true){
+			//climberActive();
+		//}
 		
 		
-		/* This part needs to be re-examined it has been re-written below as a potential suggestion 
-		if(climberRoutine == true){
-			climberHoldPosition();
-		}
+		// This part needs to be re-examined it has been re-written below as a potential suggestion 
+		//if(climberRoutine == true){
+			//climberHoldPosition();
+		//}
 		
-		if(climberRoutine == false){
-			if(driveStick.getRawButton(4) == true){
-				climberLeft.set(-1);
-				climberRight.set(-1);
-			} else if (driveStick.getRawButton(10) == true){
-				climberLeft.set(1);
-				climberRight.set(1);
-			}
-			else{
-				climberLeft.set(0);
-				climberRight.set(0);
-			}
-		}*/
 		
 		// Rewrite still in progress.......
-		if(climberRoutine == true){
+		
 			
 			
-			
-			
-		}
 		
 		// If we aren't in the preset routine, allow user activated controls
 		if(climberRoutine == false){
