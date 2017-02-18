@@ -28,15 +28,18 @@ public class Robot extends IterativeRobot implements cmd{
 	int autoStatus;
 	int autoMode;;
 	Timer t1;
-	
-	@Override
-	public void robotInit() {
-		// Implement the functions for the components
+	Integer encoderPulseRatio = 1;// needs to be determined, possibly at various speeds, will be in inches, default at 0.6 speed, ratio of distance to gear pulses
+	Integer averageEncPos = 1;//calculate
+	Double checkAmpValue;
 		MecDriveCmd mDrive = new MecDriveCmd(Components.driveFrontLeft, Components.driveBackLeft, Components.driveFrontRight, Components.driveBackRight, Components.driveStick);
 		CameraControl camControl = new CameraControl(Components.servoX, Components.servoY, Components.driveStick);
 		GearPushCmd gearPusher = new GearPushCmd(Components.gearMotor, Components.driveStick);
 		ClimberCmd climber = new ClimberCmd(Components.climberLeft, Components.climberRight, Components.driveStick);
 		BallSystemCmd ballSystem = new BallSystemCmd(Components.ballConveyor, Components.ballOutputWheel, Components.driveStick);
+	@Override
+	public void robotInit() {
+		// Implement the functions for the components
+	
 		//EncoderDistanceCMD encDisTest = new EncoderDistanceCMD(Components.driveBackLeft, Components.driveBackRight, Components.driveStick);
 		
 		// Add functions to the cmdlist
@@ -58,8 +61,50 @@ public class Robot extends IterativeRobot implements cmd{
 	public void autonomousInit() {
 		autoStatus = 0;
 		autoMode = 0;
+		Components.driveBackLeft.setEncPosition(0);
+		Components.driveBackRight.setEncPosition(0);
+		gearPusher.pushRoutine = false;
 	}
-
+		
+	
+	public void auto1(){
+		if(autoStatus == 0){
+			if(averageEncPos < 95 * encoderPulseRatio){
+				Components.driveStick.pY = -0.6;
+			} else{
+				autoStatus = 1;
+				Components.driveStick.pY = -0.4; //slow enough to drive but need to not smash the wall	
+				 checkAmpValue = Components.driveBackLeft.getOutputCurrent();
+			}
+		}	
+		if (autoStatus == 1){	
+			if (Components.driveBackLeft.getOutputCurrent() < checkAmpValue*2){//not sure if that is correct
+				Components.driveStick.pY = -0.4;
+			} else{
+				Components.driveStick.pY = 0;
+				autoStatus = 2;
+				gearPusher.gearPushStart();
+			}				
+		}
+		if (autoStatus == 2){
+			if(gearPusher.pushRoutine == true){
+				gearPusher.gearPush();
+			} else{
+				autoStatus = 3;
+			}
+		}
+		if(autoStatus == 3){
+			if(averageEncPos < 10 * encoderPulseRatio){
+				Components.driveStick.pY = 0.6;
+			} else{
+				Components.driveStick.pY = 0;
+			}
+		}
+	}
+	
+	
+	
+	
 	/**
 	 * This function is called periodically during autonomous
 	 ?//*/

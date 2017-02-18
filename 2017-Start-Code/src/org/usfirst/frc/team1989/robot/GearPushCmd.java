@@ -108,7 +108,7 @@ public class GearPushCmd implements cmd {
 	@Override
 	public void teleopInit() {
 		// TODO Auto-generated method stub
-		
+		 
 	}
 
 	@Override
