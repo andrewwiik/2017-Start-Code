@@ -37,6 +37,7 @@ public class Robot extends IterativeRobot implements cmd{
 		GearPushCmd gearPusher = new GearPushCmd(Components.gearMotor, Components.driveStick);
 		ClimberCmd climber = new ClimberCmd(Components.climberLeft, Components.climberRight, Components.driveStick);
 		BallSystemCmd ballSystem = new BallSystemCmd(Components.ballConveyor, Components.ballOutputWheel, Components.driveStick);
+		//EncoderDistanceCMD encDisTest = new EncoderDistanceCMD(Components.driveBackLeft, Components.driveBackRight, Components.driveStick);
 		
 		// Add functions to the cmdlist
 		SharedStuff.cmdlist.add(mDrive);

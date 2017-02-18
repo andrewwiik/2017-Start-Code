@@ -19,32 +19,27 @@ public class GearPushCmd implements cmd {
 		this.gearPush = gearPush;
 		this.driveStick = driveStick;
 		this.utilityStick = utilityStick;
-		
-		
 	}
 	
 	public GearPushCmd(CANTalon1989 gearPush, JsScaled driveStick){
 		this.driveStick = driveStick;
 		this.gearPush = gearPush;
 	}
+	
 	//Class Method
 	public void gearPushStart(){
-		//System.out.println("Start the routine");
 		pushRoutine = true;
 	}
 	
 	// Push the gear based on 
 	public void gearPush(){
 		if (state == 0){
-			//System.out.println("Start state 0");
 			state = 1;
 			gearTimer.reset();
 			gearTimer.stop();
 			gearTimer.start();
 		}	
 		else if (state == 1){
-			//SmartDashboard.putString("DB/String 0", "Start state 1");
-			//System.out.println("Start state 1");
 			pushFoward();
 			//gearPush.set(-1);
 			if (gearTimer.get() > 1){
@@ -56,8 +51,6 @@ public class GearPushCmd implements cmd {
 			}
 		}
 		else if (state == 2){
-			//SmartDashboard.putString("DB/String 1", "Start state 2");
-			//System.out.println("Start state 2");
 			pushBack();
 			//gearPush.set(1);
 			if (gearTimer.get() > 1){
@@ -68,8 +61,6 @@ public class GearPushCmd implements cmd {
 			}
 		}
 		else if (state == 3){
-			//SmartDashboard.putString("DB/String 2", "Start state 3");
-			//System.out.println("Start state 3");
 			state = 0;
 			pushStop();
 			pushRoutine = false;

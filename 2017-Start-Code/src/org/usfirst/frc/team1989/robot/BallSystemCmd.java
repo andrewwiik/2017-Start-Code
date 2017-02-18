@@ -5,25 +5,18 @@ public class BallSystemCmd implements cmd {
 	CANTalon1989 ballConveyor;
 	CANTalon1989 ballOutputWheel;
 	JsScaled driveStick;
-	Boolean ballIntakeActive = false;
-	
-	
+	Boolean ballIntakeActive;
+	Boolean ballOutputActive;
+		
 	public BallSystemCmd(CANTalon1989 ballConveyor, CANTalon1989 ballOutputWheel, JsScaled driveStick){
 		this.ballConveyor = ballConveyor;
 		this.ballOutputWheel = ballOutputWheel;
 		this.driveStick = driveStick;
 	}
 	
-	
 	public void ballIntake(){
-		if (ballIntakeActive == true){
-			ballConveyor.set(-1);
-			ballOutputWheel.set(-1);
-		}
-		else{
-			ballConveyor.set(0);
-			ballOutputWheel.set(0);
-		}
+		ballConveyor.set(-1);
+		ballOutputWheel.set(-1);
 	}
 	
 	public void ballOutput(){
@@ -31,14 +24,10 @@ public class BallSystemCmd implements cmd {
 		ballOutputWheel.set(1);
 	}
 	
-	
-	
-	
-	
 	@Override
 	public void autonomousInit() {
 		// TODO Auto-generated method stub
-		
+	
 	}
 
 	@Override
@@ -62,20 +51,31 @@ public class BallSystemCmd implements cmd {
 	@Override
 	public void teleopInit() {
 		// TODO Auto-generated method stub
-		
+		ballIntakeActive = false;
+		ballOutputActive = false;
 	}
 
 	@Override
 	public void teleopPeriodic() {
 		// TODO Auto-generated method stub
 		Components.writemessage.setmessage(5, ballIntakeActive.toString() );
-		if(driveStick.getRawButton(1) == true){
-			ballOutput();
+		if(driveStick.getRawButton(9) == true){
+			ballOutputActive = true;
+			ballIntakeActive = false;
 		}
-		if(driveStick.getRawButton(2) == true){
-			ballIntakeActive = !ballIntakeActive;
+		if(driveStick.getRawButton(7) == true){
+			ballOutputActive = false;
+			ballIntakeActive = true;
 		}
+		// Turn off Ball motors
+		if(driveStick.getRawButton(8) == true){
+			ballIntakeActive = false;
+			ballOutputActive = false;
+		}
+		if(ballOutputActive)
+		ballOutput();
 		
+		if(ballIntakeActive)
 		ballIntake();
 	}
 
