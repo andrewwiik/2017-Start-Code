@@ -58,25 +58,30 @@ public class BallSystemCmd implements cmd {
 	@Override
 	public void teleopPeriodic() {
 		// TODO Auto-generated method stub
-		Components.writemessage.setmessage(5, ballIntakeActive.toString() );
-		if(driveStick.getRawButton(9) == true){
-			ballOutputActive = true;
-			ballIntakeActive = false;
-		}
+		//Components.writemessage.setmessage(5, ballIntakeActive.toString() );
+		//if(driveStick.getRawButton(9) == true){
+			//ballOutputActive = true;
+			//ballIntakeActive = false;
+		//}
 		if(driveStick.getRawButton(7) == true){
-			ballOutputActive = false;
-			ballIntakeActive = true;
+			//ballOutputActive = false;
+			//ballIntakeActive = true;
+			ballIntake();
 		}
 		// Turn off Ball motors
-		if(driveStick.getRawButton(8) == true){
-			ballIntakeActive = false;
-			ballOutputActive = false;
+		else if(driveStick.getRawButton(8) == true){
+			//ballIntakeActive = false;
+			//ballOutputActive = false;
+			ballOutput();
+		} else {
+			ballConveyor.set(0);
+			ballOutputWheel.set(0);
 		}
-		if(ballOutputActive)
-		ballOutput();
+		//if(ballOutputActive)
+		//ballOutput();
 		
-		if(ballIntakeActive)
-		ballIntake();
+		//if(ballIntakeActive)
+		//ballIntake();
 	}
 
 }
