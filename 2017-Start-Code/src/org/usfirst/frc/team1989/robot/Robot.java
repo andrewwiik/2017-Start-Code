@@ -81,7 +81,7 @@ public class Robot extends IterativeRobot implements cmd{
 			if (Components.driveBackLeft.getOutputCurrent() < checkAmpValue*2){//not sure if that is correct
 				Components.driveStick.pY = -0.4;
 			} else{
-				Components.driveStick.pY = 0;
+				Components.driveStick.pY = 0.0;
 				autoStatus = 2;
 				gearPusher.gearPushStart();
 			}				
@@ -97,7 +97,7 @@ public class Robot extends IterativeRobot implements cmd{
 			if(averageEncPos < 10 * encoderPulseRatio){
 				Components.driveStick.pY = 0.6;
 			} else{
-				Components.driveStick.pY = 0;
+				Components.driveStick.pY = 0.0;
 			}
 		}
 	}
@@ -110,7 +110,9 @@ public class Robot extends IterativeRobot implements cmd{
 	 ?//*/
 	@Override
 	public void autonomousPeriodic() {
-		
+		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
+			SharedStuff.cmdlist.get(i).autonomousPeriodic();
+		}
 	
 	}
 

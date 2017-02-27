@@ -13,16 +13,21 @@ public class MecDriveCmd implements cmd {
 	CANTalon1989 driveBackRight;// encoder motor
 	RobotDrive driveTrain;
 	JsScaled driveStick;
-	int encPulseRatio = 76;
+	int encPulseRatio = 63;
 	int breakDistance = 912;
 	double minPower = 0.2;
 	double speedRamp = 0.05;
 	boolean driveFlag = false;
 	
 	// Par of the Encoder Test (needs class scope, or it would go in test init)
-	Integer encoderLeftCount;
-	Integer encoderRightCount;
-	
+	Integer encoderLeftCount = 0;
+	Integer encoderRightCount= 0;
+	Integer driveStateTemp = 0;
+	Integer cycleDelay = 0;
+	Integer deltaEncValue;
+	Double driveTempAdjustment;
+	Double driveTwistAdjustment = 0.0;
+	double temp = 8;
 	
 	public MecDriveCmd(CANTalon1989 driveFrontLeft, CANTalon1989 driveBackLeft, CANTalon1989 driveFrontRight, CANTalon1989 driveBackRight,
 			JsScaled driveStick){
@@ -52,7 +57,7 @@ public class MecDriveCmd implements cmd {
 		}
 		// Output data to the dash
 		Components.writemessage.setmessage(0, encoderLeftCount.toString());
-		Components.writemessage.setmessage(0, encoderRightCount.toString());
+		Components.writemessage.setmessage(1, encoderRightCount.toString());
 			
 	}
 	
@@ -69,61 +74,63 @@ public class MecDriveCmd implements cmd {
 		if (power > 0){
 			speedRamp = -speedRamp;
 		}
-		if (driveBackLeft.getEncPosition() < pulseCount || driveBackRight.getEncPosition() < pulseCount){
-				if (pulseCount - driveBackLeft.getEncPosition() < breakDistance && pulseCount - driveBackLeft.getEncPosition() > breakDistance *.875){
-					power +=speedRamp;
-				} else if(pulseCount - driveBackLeft.getEncPosition() < breakDistance *.875 && pulseCount - driveBackLeft.getEncPosition() > breakDistance *.75){
-					power += speedRamp * 2;
-				} else if(pulseCount - driveBackLeft.getEncPosition() < breakDistance *.75 && pulseCount - driveBackLeft.getEncPosition() > breakDistance *.625){
-					power += speedRamp * 3;
-				} else if(pulseCount - driveBackLeft.getEncPosition() < breakDistance *.625 && pulseCount - driveBackLeft.getEncPosition() > breakDistance *.5){
-					power += speedRamp * 4;
-				} else if (pulseCount - driveBackLeft.getEncPosition() < breakDistance * 0.5 && pulseCount - driveBackLeft.getEncPosition() > breakDistance *.375){
-					power += speedRamp *5;
-				} else if (pulseCount - driveBackLeft.getEncPosition()*0.375 < breakDistance && pulseCount - driveBackLeft.getEncPosition() > breakDistance *.25){
-					power += speedRamp * 6;
-				} else if (pulseCount - driveBackLeft.getEncPosition() < breakDistance * 0.25 && pulseCount - driveBackLeft.getEncPosition() > breakDistance * .125){
-					power += speedRamp *7;
-				} else if (pulseCount - driveBackLeft.getEncPosition() < breakDistance *.125){
-					power += speedRamp * 8;
-				}
-			if (power >= minPower){
-				driveStick.pY = power;
-			} else{
-				driveStick.pY = minPower;
-			}
-		} 
-		
-		else {
-			driveStick.pY = 0;
-			driveFlag = false;
+		if (Math.abs(driveBackLeft.getEncPosition()) < pulseCount || Math.abs(driveBackRight.getEncPosition()) < pulseCount){
+			if ((pulseCount - Math.abs(driveBackLeft.getEncPosition())) <= (breakDistance *  (temp /8))){
+					power += speedRamp; 
+					temp -=1;
+			
 		}
+			
+			driveStick.pY = power;
+		}
+		else {
+			driveStick.pY = 0.0;
+			driveFlag = false;
+		} 
 	}
 	
 	
 	public void encoderDrive(double jsX, double jsY, double jsTwist){
 		if(jsX == 0 && jsTwist == 0 && jsY > 0){
+			if(driveStateTemp == 0){
+				encoderLeftCount = driveBackLeft.getEncPosition();
+				encoderRightCount = driveBackRight.getEncPosition();
+				deltaEncValue = encoderRightCount - encoderLeftCount;
+					if(deltaEncValue != 0){
+						driveStateTemp = 1;
+						driveTempAdjustment = (double) (deltaEncValue/200);
+					} else {
+						driveTrain.mecanumDrive_Cartesian(jsX, jsY, jsTwist + driveTwistAdjustment, 0);
+					}
+			    } else if (driveStateTemp == 1){
+				
+				driveTrain.mecanumDrive_Cartesian(jsX, jsY, jsTwist + driveTempAdjustment + driveTwistAdjustment, 0);
+				cycleDelay+=1;
+				     if (cycleDelay == 2){
+					      driveStateTemp = 2;
+					      cycleDelay = 0;
+				     }				
+			    } 
+			    else if(driveStateTemp == 2){
+				 driveTwistAdjustment+= driveTempAdjustment/2;
+				 driveTrain.mecanumDrive_Cartesian(jsX, jsY, jsTwist + driveTwistAdjustment, 0);
+				 driveStateTemp = 0;
+			     }
 			
 			
 			
 			
 			
-			
-		} else{
-			driveTrain.mecanumDrive_Cartesian(jsX, jsY, jsTwist, 0);
-			driveBackLeft.setEncPosition(0);
-			driveBackRight.setEncPosition(0);
-		}
-		
-		
-		
-		
-		
-		
-		
+			} else{
+				driveStateTemp = 0;
+				driveTrain.mecanumDrive_Cartesian(jsX, jsY, jsTwist, 0);
+				driveBackLeft.setEncPosition(0);
+				driveBackRight.setEncPosition(0);
+		}	
 	}
 	
 	
+
 	
 	
 	
@@ -134,14 +141,27 @@ public class MecDriveCmd implements cmd {
 	
 	
 	
-	public void autonomousInit(){}
+	public void autonomousInit(){
+		driveBackLeft.enableBrakeMode(true);
+		driveBackRight.enableBrakeMode(true);
+		driveFrontLeft.enableBrakeMode(true);
+		driveFrontRight.enableBrakeMode(true);
+	}
 	public void autonomousPeriodic() {
+		driveFoward(114, 0.6);
+		Components.writemessage.setmessage(5, driveStick.pY.toString());
+		Components.writemessage.updatedash();
 		driveTrain.mecanumDrive_Cartesian(driveStick.pX, driveStick.pY, driveStick.pTwist,0);//Last 0 is gyro angle needs to be checked if we get one
+		
 	}
 	public void teleopInit(){}
 	public void teleopPeriodic(){
-		
+		encoderLeftCount = driveBackLeft.getEncPosition();
+		encoderRightCount = driveBackRight.getEncPosition();
 		driveTrain.mecanumDrive_Cartesian(driveStick.sgetX(), driveStick.sgetY(), driveStick.sgetTwist(), 0);
+		Components.writemessage.setmessage(0, encoderLeftCount.toString());
+		Components.writemessage.setmessage(1, encoderRightCount.toString());
+			
 		Components.writemessage.updatedash();
 	}
 	public void testInit(){}
