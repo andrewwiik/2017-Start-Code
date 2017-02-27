@@ -126,7 +126,7 @@ public class GearPushCmd implements cmd {
 		if(pushRoutine == false){
 			if(driveStick.getRawButton(10) == true){
 				pushBack();
-			} else if(driveStick.getRawButton(11) == true) {
+			} else if(driveStick.getRawButton(9) == true) {
 				pushFoward();
 			} else {
 				pushStop();

@@ -40,7 +40,7 @@ public class EncoderDistanceCMD implements cmd{
 		int average = (driveBackLeft.getEncPosition() + driveBackRight.getEncPosition()) / 2; 
 		if(average < 100){
 			
-			driveStick.pY = 1;
+			driveStick.pY = 1.0;
 		}
 	}
 

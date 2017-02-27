@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.Timer;
 public class JsScaled extends Joystick {
     public double low = .9; // set to 1 /full drive if above
     public double deadzone = .15; //set to 0 if below
-    public double pY = 0; 
-    public double pX = 0;
-    public double pTwist = 0;
+    public Double pY = 0.0; 
+    public Double pX = 0.0;
+    public Double pTwist = 0.0;
     public boolean[] buttons = new boolean[15];
     public double cycleTime; //to be determined needs testing
     Timer pwmTimer;
