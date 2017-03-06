@@ -14,6 +14,10 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.CommandGroup;
+import edu.wpi.first.wpilibj.command.Scheduler;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -24,6 +28,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot implements cmd{
 
 	// Define class attributes
+	
+	private CommandGroup autonomousCommandGroup;
+	
 	Integer tmpint;
 	int autoStatus;
 	int autoMode;;
@@ -59,11 +66,14 @@ public class Robot extends IterativeRobot implements cmd{
 	
 	@Override
 	public void autonomousInit() {
-		autoStatus = 0;
-		autoMode = 0;
-		Components.driveBackLeft.setEncPosition(0);
-		Components.driveBackRight.setEncPosition(0);
-		gearPusher.pushRoutine = false;
+// 		autoStatus = 0;
+// 		autoMode = 0;
+// 		Components.driveBackLeft.setEncPosition(0);
+// 		Components.driveBackRight.setEncPosition(0);
+// 		gearPusher.pushRoutine = false;
+		autonomousCommandGroup = new Forward();
+		autonomousCommandGroup.start();
+		
 	}
 		
 	
@@ -110,9 +120,10 @@ public class Robot extends IterativeRobot implements cmd{
 	 ?//*/
 	@Override
 	public void autonomousPeriodic() {
-		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
-			SharedStuff.cmdlist.get(i).autonomousPeriodic();
-		}
+// 		for (int i = 0; i < SharedStuff.cmdlist.size(); i++) {
+// 			SharedStuff.cmdlist.get(i).autonomousPeriodic();
+// 		}
+		Scheduler.getInstance().run();
 	
 	}
 
