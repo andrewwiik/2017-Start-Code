@@ -44,19 +44,19 @@ When in autonomous our motors are inverted because our gear holder aka the "cere
 ##### Step 1
 Make sure the driver station is using the "Default" Dashboard Type as pictured below.
 
-![Autonomous Mode Selection Step 1](https://raw.githubusercontent.com/andrewwiik/FRC-Private/master/autonomous-dashboard-type.png?token=AK3o2UxZ_a7TsCI1ZSzT4pVkBU-iafVkks5Y099gwA%3D%3D "Dashboard Type Selection")
+![Autonomous Mode Selection Step 1](https://raw.githubusercontent.com/andrewwiik/2017-Start-Code/master/autonomous-dashboard-type.png "Dashboard Type Selection")
 
 ##### Step 2
 Select the desired autonomous mode using the field highlighted in the picture below.
 
-![Autonomous Mode Selection Step 2](https://raw.githubusercontent.com/andrewwiik/FRC-Private/master/autonomous-dashboard-selection.png?token=AK3o2S7AZM79gZ2fek8LVqK28p5vD1Sbks5Y098lwA%3D%3D "Autonomous Mode Selection")
+![Autonomous Mode Selection Step 2](https://raw.githubusercontent.com/andrewwiik/2017-Start-Code/master/autonomous-dashboard-selection.png "Autonomous Mode Selection")
 
 ### Teleop Mode
 
 #### Summary
 Teleop Mode is used for the remainder of the match after the autonomous mode portion is complete. For the tele-operated portion of the match we are using a Logitech F310 Gamepad as our primary input device to control our robot. The mapping of the controls on the gamepad are as depicted below:
 
-![Logitech F310 Gamepad Map](https://raw.githubusercontent.com/andrewwiik/FRC-Private/master/gamepad-map.png?token=AK3o2TJEtloMS8ZbwCdu9WKcCNpOFtR6ks5Y09-owA%3D%3D "Logitech F310 Gamepad Map")
+![Logitech F310 Gamepad Map](https://raw.githubusercontent.com/andrewwiik/2017-Start-Code/master/gamepad-map.png "Logitech F310 Gamepad Map")
 
 
 A second person on our Drive Team uses a seperate joystick for the mechanical operations of our robot such as operating the winch, and collecting/dispensing fuel.
